@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# set -x
+DEBUG=1
+
+SCRIPT="$(readlink --canonicalize-existing "$0")"
+SANDBOX_CONF_DIR="$(dirname "$SCRIPT")"
+. "$SANDBOX_CONF_DIR/common.sh"
+
+APP_CMD='iceweasel -no-remote'
+# XPRA_ENABLED="0"
+
+start_cmd="$FIREJAIL_PATH $FIREJAIL_COMMON_FLAGS $FIREJAIL_PRIVATE_FLAGS --profile="$FIREJAIL_PROFILE_DIR/iceweasel.profile" --nosound --"
+
+if [ "$XPRA_ENABLED" == "1" ]; then
+	$start_cmd $XPRA_START_FLAGS --start-child="$APP_CMD" &
+	xpra_attach
+else
+	$start_cmd $APP_CMD
+fi
