@@ -4,7 +4,7 @@
 
 ## Debbuging functions
 function debug_echo() {
-    if [ "$DEBUG" -gt 0 ]; then
+    if [ $DEBUG -gt 0 ]; then
         echo "$@"
     fi
 }
@@ -26,12 +26,19 @@ SANDBOX_DISPLAY="$(echo "$SANDBOX_NAME" | sha512sum | sed 's/[^0-9]//g' | cut -c
 SANDBOX_HOME_DIR="$HOME/.sandboxes/homes/$SANDBOX_NAME"
 FIREJAIL_STARTUP_TIME="3"
 FIREJAIL_PROFILE_DIR="/etc/firejail"
-XPRA_ENABLED="1"
+XPRA_ENABLED=1
 FIREJAIL_PATH="firejail"
+DEBUG=0
+HIDE_UNSANDBOXED_APPS=""
+USER_DESKTOP_ENTRIES_DIR="$HOME/.local/share/applications"
 
 ## Setup `firejail` flags used by all sandboxes.
 FIREJAIL_COMMON_FLAGS="--name=$SANDBOX_NAME --private-dev --shell=none --ipc-namespace --blacklist=/tmp/.X11-unix"
-if [ "$DEBUG" -gt 0 ]; then
+
+FIREJAIL_NOLOCAL="--netfilter=$FIREJAIL_PROFILE_DIR/nolocal.net --net=nat0"
+# If a new network namespaces is not created, --netfilter option does nothing.
+
+if [ $DEBUG -gt 0 ]; then
     FIREJAIL_COMMON_FLAGS="$FIREJAIL_COMMON_FLAGS --debug"
 fi
 FIREJAIL_PRIVATE_FLAGS="--private="$SANDBOX_HOME_DIR""
@@ -46,4 +53,8 @@ XPRA_START_FLAGS="xpra start $XPRA_COMMON_FLAGS --no-daemon --exit-with-children
 ## Include config.sh
 test -r "$SANDBOX_CONF_DIR/config.sh" && . "$SANDBOX_CONF_DIR/config.sh"
 test -r "$SANDBOX_CONF_DIR/config_local.sh" && . "$SANDBOX_CONF_DIR/config_local.sh"
-mkdir --parents "$SANDBOX_HOME_DIR"
+
+if [ "$SANDBOX_NAME" != 'handle_desktop_entries' ]
+then
+    mkdir --parents "$SANDBOX_HOME_DIR"
+fi

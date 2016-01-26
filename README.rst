@@ -24,6 +24,7 @@ Installation
    mkdir --parents ~/.sandboxes/firejail-scripts
    git clone https://github.com/ypid/firejail-scripts.git ~/.sandboxes/firejail-scripts
    ln -s ~/.sandboxes/firejail-scripts/common.sh ~/.sandboxes/
+   ln -s ~/.sandboxes/firejail-scripts/handle_desktop_entries ~/.sandboxes/
    cp ~/.sandboxes/firejail-scripts/p-banking-iceweasel ~/.sandboxes/
 
 Usage
@@ -39,6 +40,13 @@ Or:
 
    export PATH="${PATH}${PATH+:}${HOME}/.sandboxes"
    p-banking-iceweasel
+
+Or:
+
+.. code-block:: Shell
+
+   ~/.sandboxes/handle_desktop_entries
+   ## Now you can use your window manager to start the sandboxed application.
 
 .. _`Qubes OS`: https://www.qubes-os.org/
 .. _`p-banking-iceweasel`: p-banking-iceweasel

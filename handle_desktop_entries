@@ -1,0 +1,36 @@
+#!/bin/bash
+## @author Copyright (C) 2016 Robin Schneider <ypid@riseup.net>
+## @license AGPLv3 <https://www.gnu.org/licenses/agpl-3.0.html>
+
+SCRIPT="$(readlink --canonicalize-existing "$0")"
+SANDBOX_CONF_DIR="$(dirname "$SCRIPT")"
+. "$SANDBOX_CONF_DIR/common.sh"
+
+function create_desktop_file() {
+    profile="$1"
+    desktop_filepath="$USER_DESKTOP_ENTRIES_DIR/userapp-sandbox-${profile}.desktop"
+    (
+        echo "[Desktop Entry]"
+        echo "Encoding=UTF-8"
+        echo "Version=1.0"
+        echo "Type=Application"
+        echo "NoDisplay=false"
+        echo "Exec=sh -c '$HOME/.sandboxes/$profile >> /tmp/.duden-libreoffice.log'"
+        echo "Name=$profile"
+    ) > "$desktop_filepath"
+}
+
+## Create desktop entries.
+ls d* p* w* 2>/dev/zero | grep --invert-match --extended-regexp --ignore-case '^(makefile|homes|config.*.sh|common.sh|create_desktop_file)$' | while read profile
+do
+    create_desktop_file "$profile"
+done
+
+## Overwrite original desktop entries.
+for application in $HIDE_UNSANDBOXED_APPS
+do
+    (
+        cat /usr/share/applications/iceweasel.desktop
+        echo Hidden=true
+    ) > "$USER_DESKTOP_ENTRIES_DIR/userapp-unsandboxed-hide-${application}.desktop"
+done
