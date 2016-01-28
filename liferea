@@ -1,15 +1,18 @@
 #!/bin/bash
 
 # set -x
-DEBUG=1
+# DEBUG=1
 
 SANDBOX_CONF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 . "$SANDBOX_CONF_DIR/config_common.sh"
 
-APP_CMD='iceweasel -no-remote'
-# XPRA_ENABLED="0"
+APP_CMD="liferea"
+XPRA_ENABLED="0"
+## Crashes with xpra when clicking on „Subscriptions“.
 
-start_cmd="$FIREJAIL_PATH $FIREJAIL_COMMON_FLAGS $FIREJAIL_NOLOCAL $FIREJAIL_PRIVATE_FLAGS --profile="$FIREJAIL_PROFILE_DIR/iceweasel.profile" --nosound"
+## Needs dbus …
+# $FIREJAIL_NOLOCAL
+start_cmd="$FIREJAIL_PATH $FIREJAIL_COMMON_FLAGS $FIREJAIL_PRIVATE_FLAGS --profile="$FIREJAIL_PROFILE_DIR/generic.profile""
 
 if [ "$XPRA_ENABLED" == "1" ]; then
 	$start_cmd $FIREJAIL_XPRA_FLAGS $XPRA_START_FLAGS --start-child="$APP_CMD" &

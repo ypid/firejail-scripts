@@ -2,9 +2,8 @@
 ## @author Copyright (C) 2016 Robin Schneider <ypid@riseup.net>
 ## @license AGPLv3 <https://www.gnu.org/licenses/agpl-3.0.html>
 
-SCRIPT="$(readlink --canonicalize-existing "$0")"
-SANDBOX_CONF_DIR="$(dirname "$SCRIPT")"
-. "$SANDBOX_CONF_DIR/common.sh"
+SANDBOX_CONF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+. "$SANDBOX_CONF_DIR/config_common.sh"
 
 function create_desktop_file() {
     profile="$1"
@@ -21,7 +20,7 @@ function create_desktop_file() {
 }
 
 ## Create desktop entries.
-ls d* p* w* 2>/dev/zero | grep --invert-match --extended-regexp --ignore-case '^(makefile|homes|config.*.sh|common.sh|create_desktop_file)$' | while read profile
+ls $SANDBOX_CONF_DIR -1 2>/dev/zero | grep --invert-match --extended-regexp --ignore-case '^(makefile|homes|config.*)$' | while read profile
 do
     create_desktop_file "$profile"
 done
