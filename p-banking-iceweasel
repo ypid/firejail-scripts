@@ -6,13 +6,15 @@ DEBUG=1
 SANDBOX_CONF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 . "$SANDBOX_CONF_DIR/config_common.sh"
 
-APP_CMD='iceweasel -no-remote'
-# XPRA_ENABLED="0"
+# APP_CMD='iceweasel -no-remote'
+APP_CMD='chromium --incognito'
+XPRA_ENABLED="0"
 
-start_cmd="$FIREJAIL_PATH $FIREJAIL_COMMON_FLAGS $FIREJAIL_NOLOCAL $FIREJAIL_PRIVATE_FLAGS --profile="$FIREJAIL_PROFILE_DIR/iceweasel.profile" --nosound"
+# start_cmd="$FIREJAIL_PATH $FIREJAIL_COMMON_FLAGS --private --profile="$FIREJAIL_PROFILE_DIR/iceweasel.profile" --nosound"
+start_cmd="$FIREJAIL_PATH $FIREJAIL_COMMON_FLAGS --private --profile="$FIREJAIL_PROFILE_DIR/chromium.profile" --nosound"
 
 if [ "$XPRA_ENABLED" == "1" ]; then
-	$start_cmd $FIREJAIL_XPRA_FLAGS $XPRA_START_FLAGS --start-child="$APP_CMD" &
+	$start_cmd $FIREJAIL_XPRA_FLAGS $FIREJAIL_NOLOCAL $XPRA_START_FLAGS --start-child="$APP_CMD" &
 	xpra_attach
 else
 	$start_cmd $APP_CMD
