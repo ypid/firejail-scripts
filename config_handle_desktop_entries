@@ -10,12 +10,11 @@ function create_desktop_file() {
     desktop_filepath="$USER_DESKTOP_ENTRIES_DIR/userapp-sandbox-${profile}.desktop"
     (
         echo "[Desktop Entry]"
-        echo "Encoding=UTF-8"
         echo "Version=1.0"
         echo "Type=Application"
-        echo "NoDisplay=false"
-        echo "Exec=sh -c '$HOME/.sandboxes/$profile >> /tmp/.duden-libreoffice.log'"
         echo "Name=$profile"
+        echo "Exec=$HOME/.sandboxes/bin/$profile"
+        echo "Icon=${profile##*-}"
     ) > "$desktop_filepath"
 }
 
@@ -29,7 +28,7 @@ done
 for application in $HIDE_UNSANDBOXED_APPS
 do
     (
-        cat /usr/share/applications/iceweasel.desktop
+        cat "/usr/share/applications/${application}.desktop"
         echo Hidden=true
-    ) > "$USER_DESKTOP_ENTRIES_DIR/userapp-unsandboxed-hide-${application}.desktop"
+    ) > "$USER_DESKTOP_ENTRIES_DIR/${application}.desktop"
 done
