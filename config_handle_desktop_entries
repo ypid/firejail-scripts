@@ -18,8 +18,11 @@ function create_desktop_file() {
     ) > "$desktop_filepath"
 }
 
+## Delete old desktop entries (to ensure that absent profiles result in absent desktop entries).
+find "$USER_DESKTOP_ENTRIES_DIR" -name 'userapp-sandbox-*.desktop' -delete
+
 ## Create desktop entries.
-ls $SANDBOX_CONF_DIR -1 2>/dev/zero | grep --invert-match --extended-regexp --ignore-case '^(makefile|homes|config.*)$' | while read profile
+ls -1 "$SANDBOX_CONF_DIR" 2>/dev/zero | grep --invert-match --extended-regexp --ignore-case '^(makefile|homes|config.*)$' | while read profile
 do
     create_desktop_file "$profile"
 done
