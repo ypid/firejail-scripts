@@ -30,6 +30,7 @@ XPRA_ENABLED=1
 FIREJAIL_PATH="firejail"
 DEBUG=0
 HIDE_UNSANDBOXED_APPS=""
+REENABLE_UNSANDBOXED_APPS=""
 USER_DESKTOP_ENTRIES_DIR="$HOME/.local/share/applications"
 
 ## Setup `firejail` flags used by all sandboxes.

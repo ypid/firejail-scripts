@@ -18,6 +18,9 @@ function create_desktop_file() {
     ) > "$desktop_filepath"
 }
 
+## Ensure that $USER_DESKTOP_ENTRIES_DIR does exist.
+mkdir --parents "$USER_DESKTOP_ENTRIES_DIR"
+
 ## Delete old desktop entries (to ensure that absent profiles result in absent desktop entries).
 find "$USER_DESKTOP_ENTRIES_DIR" -name 'userapp-sandbox-*.desktop' -delete
 
@@ -27,11 +30,18 @@ do
     create_desktop_file "$profile"
 done
 
+## Create backup profiles so that applications can still be used as preferred application.
+for application in $REENABLE_UNSANDBOXED_APPS
+do
+    (
+        grep --invert-match '^StartupWMClass=' "/usr/share/applications/${application}.desktop" | sed "s/${application^}/unsandboxed-${application^}/g"
+        grep '^StartupWMClass=' "/usr/share/applications/${application}.desktop"
+    ) > "$USER_DESKTOP_ENTRIES_DIR/userapp-unsandboxed-${application}.desktop"
+done
+
 ## Overwrite original desktop entries.
 for application in $HIDE_UNSANDBOXED_APPS
 do
-    (
-        cat "/usr/share/applications/${application}.desktop"
-        echo Hidden=true
-    ) > "$USER_DESKTOP_ENTRIES_DIR/${application}.desktop"
+    cp "/usr/share/applications/${application}.desktop" "$USER_DESKTOP_ENTRIES_DIR/${application}.desktop"
+    crudini --set "$USER_DESKTOP_ENTRIES_DIR/${application}.desktop" 'Desktop Entry' Hidden true
 done
