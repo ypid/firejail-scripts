@@ -59,6 +59,9 @@ Or:
 
    ~/.sandboxes/bin/config_handle_desktop_entries
    ## Now you can use your window manager to start the sandboxed application.
+   ## You might want to configure `HIDE_UNSANDBOXED_APPS="iceweasel chromium"`
+   ## with all your sandboxed applications so that you don’t start a unsandboxed
+   ## one by accident.
 
 .. _`Qubes OS`: https://www.qubes-os.org/
 .. _`p-banking-iceweasel`: p-banking-iceweasel
