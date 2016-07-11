@@ -2,7 +2,7 @@
 ## @license AGPLv3 <https://www.gnu.org/licenses/agpl-3.0.html>
 ## This file is sourced from all sandboxes scripts.
 
-## Debbuging functions
+## Debugging functions
 function debug_echo() {
     if [ $DEBUG -gt 0 ]; then
         echo "$@"

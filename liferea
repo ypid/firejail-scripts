@@ -12,7 +12,7 @@ XPRA_ENABLED="0"
 
 ## Needs dbus …
 # $FIREJAIL_NOLOCAL
-start_cmd="$FIREJAIL_PATH $FIREJAIL_COMMON_FLAGS $FIREJAIL_PRIVATE_FLAGS --profile="$FIREJAIL_PROFILE_DIR/generic.profile""
+start_cmd="$FIREJAIL_PATH $FIREJAIL_COMMON_FLAGS $FIREJAIL_PRIVATE_FLAGS --profile="$FIREJAIL_PROFILE_DIR/default.profile""
 
 if [ "$XPRA_ENABLED" == "1" ]; then
 	$start_cmd $FIREJAIL_XPRA_FLAGS $XPRA_START_FLAGS --start-child="$APP_CMD" &
