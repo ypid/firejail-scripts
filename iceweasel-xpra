@@ -6,7 +6,7 @@ DEBUG="1"
 SANDBOX_CONF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 . "$SANDBOX_CONF_DIR/config_common.sh"
 
-APP_CMD='iceweasel -no-remote'
+APP_CMD='firefox-esr -no-remote'
 XPRA_ENABLED="0"
 
 start_cmd="$FIREJAIL_PATH $FIREJAIL_COMMON_FLAGS $FIREJAIL_PRIVATE_FLAGS --profile="$FIREJAIL_PROFILE_DIR/iceweasel.profile""
